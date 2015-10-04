@@ -87,5 +87,5 @@ function tagContent(node) {
 
 function closeTag(node) {
   var tag = node.tagName.toLowerCase();
-  return voidElements[tag] ? '' : '</' + tag + '>';
+  return '</' + tag + '>';
 }
