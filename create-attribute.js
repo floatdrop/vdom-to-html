@@ -20,23 +20,8 @@ module.exports = createAttribute;
  */
 
 function createAttribute(name, value, isAttribute) {
-  if (properties.hasOwnProperty(name)) {
-    if (shouldSkip(name, value)) return '';
-    name = (attributeNames[name] || name).toLowerCase();
-    var attrType = properties[name];
-    // for BOOLEAN `value` only has to be truthy
-    // for OVERLOADED_BOOLEAN `value` has to be === true
-    if ((attrType === types.BOOLEAN) ||
-        (attrType === types.OVERLOADED_BOOLEAN && value === true)) {
-      return escape(name);
-    }
-    return prefixAttribute(name) + escape(value) + '"';
-  } else if (isAttribute) {
-    if (value == null) return '';
-    return prefixAttribute(name) + escape(value) + '"';
-  }
-  // return null if `name` is neither a valid property nor an attribute
-  return null;
+  name = (attributeNames[name] || name).toLowerCase();
+  return prefixAttribute(name) + escape(value) + '"';
 }
 
 /**
