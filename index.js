@@ -23,7 +23,11 @@ function toHTML(node, parent) {
 	}
 
 	if (isVNode(node)) {
-		return openTag(node) + tagContent(node) + closeTag(node);
+		var content = tagContent(node);
+		if (content === '') {
+			return openTag(node, {closed: true});
+		}
+		return openTag(node) + content + closeTag(node);
 	} else if (isVText(node)) {
 		if (parent && parent.tagName.toLowerCase() === 'script') return String(node.text);
 		return escape(String(node.text));
@@ -32,7 +36,8 @@ function toHTML(node, parent) {
 	return '';
 }
 
-function openTag(node) {
+function openTag(node, opts) {
+	var opts = opts || {};
 	var props = node.properties;
 	var ret = '<' + node.tagName.toLowerCase();
 
@@ -64,6 +69,9 @@ function openTag(node) {
 
 		var attr = createAttribute(name, value);
 		if (attr) ret += ' ' + attr;
+	}
+	if (opts.closed) {
+		return ret + '/>';
 	}
 
 	return ret + '>';
